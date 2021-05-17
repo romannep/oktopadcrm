@@ -11,7 +11,7 @@ const dataFilename = 'oktopad.db';
 function createWindow () {
   const win = new BrowserWindow({
     width: 600,
-    height: 600,
+    height: 650,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

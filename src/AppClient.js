@@ -10,8 +10,6 @@ import 'katejs/lib/client.css';
 
 import { structures, title, packageName, Settings } from './structure';
 
-import SchoolModule from './modules/school/Client';
-
 import NoteItem from './forms/NoteItem';
 import NoteList from './forms/NoteList';
 import ProductSalesReport from './forms/ProductSalesReport';
@@ -204,6 +202,15 @@ const AppClient = parent => class Client extends
 
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
 
+    // adjust roles
+    const supportRule = { entity: 'Support', method: 'settings' };
+    this.getMenuItem('Triggers').rule = supportRule;
+    this.getMenuItem('Import').rule = supportRule;
+    this.getMenuItem('Print templates').rule = supportRule;
+    this.getMenuItem('Price types').rule = supportRule;
+    this.getMenuItem('Price lists').rule = supportRule;
+    this.getMenuItem('Roles').rule = supportRule;
+
     // make submenu
     this.initSubmenu('Payments', 'Money');
     this.addSubmenu('Money', 'Expenses');
@@ -218,6 +225,8 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Settings', 'Triggers');
     this.addSubmenu('Settings', 'Import');
     this.addSubmenu('Settings', 'Print templates');
+    this.addSubmenu('Settings', 'Users');
+    this.addSubmenu('Settings', 'Roles');
 
     this.allowCreateInSelect = true;
     this.schemas = {};
@@ -249,12 +258,19 @@ const AppClient = parent => class Client extends
     submenu.submenu.push(this.menu[itemIndex]);
     this.menu.splice(itemIndex, 1);
   }
+
   spliceMenuItem(itemTitle) {
     const index = this.menu.findIndex(item => item.title === itemTitle);
     if (index > -1) {
       return this.menu.splice(index, 1)[0];
     }
+    return undefined;
   }
+
+  getMenuItem(itemTitle) {
+    return this.menu.find(item => item.title === itemTitle);
+  }
+
   async afterUserInit() {
     if (super.afterUserInit) {
       await super.afterUserInit();
