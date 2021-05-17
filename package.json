@@ -9,12 +9,12 @@
   "scripts": {
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
     "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
+    "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
+    "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
     "starter-server": "cross-env ENV=starter nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "starter-dbsync": "cross-env ENV=starter babel-node src/server.js dbsync",
     "demo-server": "cross-env ENV=demo nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "demo-dbsync": "cross-env ENV=demo babel-node src/server.js dbsync",
-    "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
-    "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
     "dbsync": "babel-node src/server.js dbsync",
     "server": "babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,7 +27,9 @@
     "build-linux": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app-linux",
     "build-package": "babel src --out-dir package --copy-files",
     "build-server-service": "babel src --out-dir lib --copy-files",
-    "build-service": "npm run build-client && npm run build-server-service"
+    "build-service": "npm run build-client && npm run build-server-service",
+    "school-server": "cross-env ENV=school nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
+    "school-client": "cross-env ENV=school babel-node makeEnv.js && react-scripts start"
   },
   "license": "AGPL-3.0",
   "dependencies": {

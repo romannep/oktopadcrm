@@ -26,7 +26,7 @@ const AppClient = parent => class Client extends use(parent) {
     }
   }
   async afterUserInit() {
-    if (super.afterUserInit()) await super.afterUserInit();
+    if (super.afterUserInit) await super.afterUserInit();
     await this.updateExtraFieldsLists();
   }
   async updateExtraFieldsLists() {
