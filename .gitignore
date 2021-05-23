@@ -9,6 +9,7 @@
 /dist
 /release
 /package
+/libserver
 
 # env
 src/front.env.json

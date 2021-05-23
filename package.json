@@ -23,7 +23,7 @@
     "build-server": "webpack --config webpack.server.js --progress",
     "build-app": "electron-builder",
     "build-app-linux": "electron-builder --linux",
-    "build": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app",
+    "build": "npm run build-client && npm run build-server && npm run build-app",
     "build-linux": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app-linux",
     "build-package": "babel src --out-dir package --copy-files",
     "build-server-service": "babel src --out-dir lib --copy-files",
