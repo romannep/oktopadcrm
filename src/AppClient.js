@@ -203,7 +203,7 @@ const AppClient = parent => class Client extends
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
 
     // adjust roles
-    const supportRule = { entity: 'Support', method: 'settings' };
+    const supportRule = { entity: 'Role', method: 'put' };
     this.getMenuItem('Triggers').rule = supportRule;
     this.getMenuItem('Import').rule = supportRule;
     this.getMenuItem('Print templates').rule = supportRule;

@@ -13,7 +13,7 @@ import Expense from './entities/Expense';
 import Receipt from './entities/Receipt';
 import DealComment from './entities/DealComment';
 
-import systemUpdates from './system-updates';
+import systemUpdates from './updates/updates';
 
 const AppServer = parent => class Server extends
   use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport, AppTrigger, AppFields, AppModules) {
@@ -65,7 +65,7 @@ const AppServer = parent => class Server extends
         console.log('Update', update.name, 'executed at', executed.executed);
       } else {
         // eslint-disable-next-line no-await-in-loop
-        await update.function();
+        await update.function(this);
         // eslint-disable-next-line no-console
         console.log('Executed ', update.name);
         executedUpdates.push({ name: update.name, executed: new Date() });
