@@ -1,4 +1,4 @@
-const { shell } = require('electron');
+const { shell, ipcRenderer } = require('electron');
 
 const sharedData = require('electron').remote.require('./shared');
 const systemAddress = `http://${sharedData.localAddress}:1122/`;
@@ -17,7 +17,6 @@ function openDir() {
 }
 
 function copyAddress() {
-  console.log('copy');
   copyTextToClipboard(systemAddress);
 }
 
@@ -46,3 +45,8 @@ function copyTextToClipboard(text) {
   }
   document.body.removeChild(textArea);
 }
+
+ipcRenderer.on('server-ready', () => {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('ready').style.display = 'block';
+});

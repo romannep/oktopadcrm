@@ -12,24 +12,24 @@ module.exports = {
   target: 'node',
   module: {
     rules: [
-      { test: /src\\.*\.(js)$/, use: 'babel-loader' }
-    ]
+      { test: /src\\.*\.(js)$/, use: 'babel-loader' },
+    ],
   },
   output: {
-      path: root('lib'),
-      filename: 'server.js',
-      libraryTarget: 'umd',
+    path: root('libserver'),
+    filename: 'server.js',
+    libraryTarget: 'umd',
   },
   externals: {
-    sqlite3: "sqlite3",
+    sqlite3: 'sqlite3',
   },
   plugins: [
-    new webpack.DefinePlugin({ "global.GENTLY": false })
+    new webpack.DefinePlugin({ 'global.GENTLY': false }),
   ],
   resolveLoader: {
     modules: [
       'node_modules',
-      path.resolve('node_modules/react-scripts/node_modules')
-    ]
-  }
+      path.resolve('node_modules/react-scripts/node_modules'),
+    ],
+  },
 };

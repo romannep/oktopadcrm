@@ -11,7 +11,7 @@ export default Entity => class Trigger extends Entity {
     this.updateTriggers();
   }
   checkTriggers({ entity, ctx, transaction, entityName }) {
-    this.triggers.forEach((trigger) => {
+    (this.triggers || []).forEach((trigger) => {
       if (trigger.conditionEntity === entityName) {
         this.processTrigger({ entity, ctx, transaction, trigger });
       }

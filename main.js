@@ -1,46 +1,21 @@
 const { app, BrowserWindow } = require('electron');
-const serverLib = require('./lib/server');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
+const serverLib = require('./libserver/server');
 const sharedData = require('./shared');
 
 const dataDirname = 'Oktopad CRM';
 const dataFilename = 'oktopad.db';
-
-function createWindow () {
-  const win = new BrowserWindow({
-    width: 600,
-    height: 650,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true,
-    },
-    autoHideMenuBar: true,
-  });
-
-  win.loadFile('app/index.html');
-  // win.webContents.openDevTools();
-}
-
-app.whenReady().then(createWindow);
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
+const updatesFilename = 'updatelog';
+// const dbversionFilename = 'dbversion';
 
 const homeDir = os.homedir();
 
 const dataDir = path.join(homeDir, dataDirname);
 const dataFile = path.join(dataDir, dataFilename);
+const updatesFile = path.join(dataDir, updatesFilename);
+
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
@@ -63,5 +38,58 @@ if (!localAddress) {
 
 sharedData.dataDir = dataDir;
 sharedData.localAddress = localAddress;
-const server = serverLib.getServer(dataFile);
-server.run();
+
+let win;
+let server;
+let updatesFinished;
+
+function startServer() {
+  // TODO: check dbversion and do dbsync
+  server = serverLib.getServer(dataFile, updatesFile);
+  server.run();
+
+  const checkReadyTimer = setInterval(() => {
+    if (server.app.updatesFinished) {
+      console.log('Updates finished');
+      clearInterval(checkReadyTimer);
+      win.webContents.send('server-ready');
+      updatesFinished = true;
+    }
+  }, 100);
+}
+
+function createWindow() {
+  win = new BrowserWindow({
+    width: 600,
+    height: 650,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    },
+    autoHideMenuBar: true,
+  });
+
+  win.loadFile('app/index.html');
+  // win.webContents.openDevTools();
+
+  startServer();
+  win.webContents.on('did-finish-load', () => {
+    if (updatesFinished) {
+      win.webContents.send('server-ready');
+    }
+  });
+}
+
+app.whenReady().then(createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});

@@ -7,7 +7,7 @@
   "removePackageScripts": true,
   "files": [
     "app/**",
-    "lib/**",
+    "libserver/**",
     "main.js",
     "shared.js"
   ],

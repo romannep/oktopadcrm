@@ -25,7 +25,8 @@ const http = {
   port: process.env.PORT || env.http.port,
 };
 
-export function getServer(dataFile) {
+export function getServer(dataFile, updatesFile) {
   database.storage = dataFile;
+  env.updatelog = updatesFile;
   return new KateJSServer({ AppServer, http, database, env, translations });
 }

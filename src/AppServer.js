@@ -50,9 +50,6 @@ const AppServer = parent => class Server extends
     this.systemUpdates.push(...systemUpdates);
   }
   async afterInit() {
-    if (super.afterInit) {
-      super.afterInit();
-    }
     if (!fs.existsSync(this.env.updatelog)) {
       fs.writeFileSync(this.env.updatelog, '[]');
     }
@@ -72,6 +69,12 @@ const AppServer = parent => class Server extends
       }
     }
     fs.writeFileSync(this.env.updatelog, JSON.stringify(executedUpdates));
+
+    if (super.afterInit) {
+      super.afterInit();
+    }
+
+    this.updatesFinished = true; // used by electron app
   }
 };
 AppServer.package = packageName;
