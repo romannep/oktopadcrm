@@ -7,8 +7,7 @@ export default class Desktop extends Form {
 
     this.elements = [
       {
-        type: Elements.LABEL,
-        title: 'Hello, world',
+        type: 'Calendar',
       },
     ];
   }

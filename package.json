@@ -33,6 +33,7 @@
   },
   "license": "AGPL-3.0",
   "dependencies": {
+    "react-big-calendar": "^0.33.3",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
