@@ -5,6 +5,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 
+import './Calendar.scss';
+
 const localizer = momentLocalizer(moment);
 const BigCalendarDND = withDragAndDrop(BigCalendar);
 
@@ -28,13 +30,15 @@ const messages = {
   today: 'Сегодня',
   agenda: 'Агенда',
   noEventsInRange: 'Нет занятий в выбранном периода',
-  showMore: e => `+ ${e} подробней`,
+  showMore: e => `+${e} еще`,
 };
 
 export default class Calendar extends Component {
+  id = 2;
   state = {
     events: [
       {
+        id: 1,
         start: moment().toDate(),
         end: moment().add(2, 'hour').toDate(),
         title: 'Some title',
@@ -43,56 +47,51 @@ export default class Calendar extends Component {
   };
 
   onEventResize = (data) => {
-    const { start, end } = data;
+    const { start, end, event } = data;
+    event.start = start;
+    event.end = end;
 
     this.setState((state) => {
-      state.events[0].start = start;
-      state.events[0].end = end;
       return { events: [...state.events] };
     });
   };
 
   onEventDrop = (data) => {
-    console.log(data);
+    const { start, end, event } = data;
+    event.start = start;
+    event.end = end;
+
+    this.setState((state) => {
+      return { events: [...state.events] };
+    });
   };
 
   handleSelect = ({ start, end }) => {
     const title = window.prompt('New Event name')
-    if (title)
+    if (title) {
       this.setState({
         events: [
           ...this.state.events,
           {
+            id: ++this.id,
             start,
             end,
             title,
           },
         ],
       });
+    }
   };
 
-  // handleDragStart = event => {
-  //   this.setState({ draggedEvent: event });
-  // };
-  //
-  // dragFromOutsideItem = () => {
-  //   return this.state.draggedEvent;
-  // };
-  //
-  // onDropFromOutside = ({ start, end, allDay }) => {
-  //   const { draggedEvent } = this.state;
-  //
-  //   const event = {
-  //     id: draggedEvent.id,
-  //     title: draggedEvent.title,
-  //     start,
-  //     end,
-  //     allDay: allDay,
-  //   };
-  //
-  //   this.setState({ draggedEvent: null })
-  //   this.moveEvent({ event, start, end })
-  // };
+  eventPropGetter = (event, start, end, isSelected) => {
+    const newStyle = {
+      backgroundColor: isSelected ? '#08b2c3' : '#088596',
+      borderColor: '#088596',
+    };
+    return {
+      style: newStyle,
+    };
+  };
 
   render() {
     return (
@@ -107,8 +106,9 @@ export default class Calendar extends Component {
           selectable
           localizer={localizer}
           messages={messages}
-          onSelectEvent={event => alert(event.title)}
+          onSelectEvent={event => console.log(event.title)}
           onSelectSlot={this.handleSelect}
+          eventPropGetter={this.eventPropGetter}
         />
       </div>
     );
