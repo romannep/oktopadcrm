@@ -1,7 +1,9 @@
 import { Form, Elements } from 'katejs/lib/client';
 
 
-export default class Desktop extends Form {
+export default class Schedule extends Form {
+  static title = 'Schedule';
+
   constructor(args) {
     super(args);
 

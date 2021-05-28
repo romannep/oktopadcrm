@@ -28,6 +28,7 @@
     "build-package": "babel src --out-dir package --copy-files",
     "build-server-service": "babel src --out-dir lib --copy-files",
     "build-service": "npm run build-client && npm run build-server-service",
+    "school-dbsync": "cross-env ENV=school babel-node src/server.js dbsync",
     "school-server": "cross-env ENV=school nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "school-client": "cross-env ENV=school babel-node makeEnv.js && react-scripts start"
   },
