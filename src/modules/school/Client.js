@@ -2,9 +2,11 @@ import Schedule from './forms/Schedule';
 import Components from './components';
 
 import translations from './translations';
+import { structures } from './structure';
 
 export default (app) => {
-  console.log('School constr');
+  app.init({ structures, addToMenu: true });
+
   app.forms.Schedule = Schedule;
   app.menu.unshift({
     title: 'Schedule',
@@ -15,5 +17,5 @@ export default (app) => {
   app.constructor.components = { ...app.constructor.components, ...Components };
 
   // в конструкторе приложения замыкается объект translations.ru - нельзя его переопределять.
-  Object.keys(translations.ru).forEach((key) => app.translations.ru[key] = translations.ru[key]);
+  Object.assign(app.translations.ru, translations.ru);
 }

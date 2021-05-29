@@ -4,9 +4,9 @@ import { AppSettings } from 'katejs-modules/lib/client';
 import { packageName } from './structure';
 
 const AppClient = parent => class Client extends use(parent, AppSettings) {
-  async afterUserInit() {
-    if (super.afterUserInit) {
-      await super.afterUserInit();
+  async afterInit() {
+    if (super.afterInit) {
+      await super.afterInit();
     }
     if (this.settings) {
       const modules = this.settings.modules || [];

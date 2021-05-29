@@ -33,7 +33,21 @@ const messages = {
   showMore: e => `+${e} еще`,
 };
 
-export default class Calendar extends Component {
+export default (props) => (
+  <div style={containerStyle}>
+    <BigCalendarDND
+      defaultView='week'
+      resizable
+      selectable
+      localizer={localizer}
+      messages={messages}
+      {...props}
+      events={props.events || []}
+    />
+  </div>
+);
+
+class Calendar1 extends Component {
   id = 2;
   state = {
     events: [
