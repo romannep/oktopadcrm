@@ -9,7 +9,12 @@ export default class Schedule extends Form {
   constructor(args) {
     super(args);
 
-    this.classModal = new ClassModal({ content: this.content, app: this.app, form: this });
+    this.classModal = new ClassModal({
+      content: this.content,
+      app: this.app,
+      form: this,
+      load: () => this.load(),
+    });
 
     this.elements = [
       {
@@ -33,7 +38,7 @@ export default class Schedule extends Form {
   }
 
   onRangeChange(range) {
-    console.log('rrange', range);
+    console.log('range', range);
   }
 
   async load() {
@@ -53,7 +58,6 @@ export default class Schedule extends Form {
     this.content.calendar.events = events;
   }
   onSelectEvent(event) {
-    console.log('select', event);
     this.classModal.open({ uuid: event.uuid });
   }
 }
