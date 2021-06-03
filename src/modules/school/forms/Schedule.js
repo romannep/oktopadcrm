@@ -22,9 +22,11 @@ export default class Schedule extends Form {
         type: 'Calendar',
         onSelectSlot: (params) => this.newClass(params),
         onRangeChange: (params) => this.onRangeChange(params),
-        views:['week','day','agenda'],
+        // views:['week','day','agenda'],
         events: [],
         onSelectEvent: (event) => this.onSelectEvent(event),
+        onEventResize: (data) => this.onEventResize(data),
+        onEventDrop: (data) => this.onEventResize(data),
       },
       ...this.classModal.elements,
     ];
@@ -38,7 +40,14 @@ export default class Schedule extends Form {
   }
 
   onRangeChange(range) {
-    console.log('range', range);
+    if (range.start) {
+      this.start = moment(range.start).startOf('day').toDate();
+      this.end = moment(range.end).endOf('day').toDate();
+    } else {
+      this.start = moment(range[0]).startOf('day').toDate();
+      this.end = moment(range[range.length - 1]).endOf('day').toDate();
+    }
+    this.load();
   }
 
   async load() {
@@ -54,10 +63,24 @@ export default class Schedule extends Form {
       start: moment(event.start).toDate(),
       end: moment(event.start).add(event.durationMin, 'minutes').toDate(),
       uuid: event.uuid,
+      title: `${event.course ? event.course.title : 'Занятие'} (${event.tutor ? event.tutor.title : ''})`,
     }));
     this.content.calendar.events = events;
   }
+
   onSelectEvent(event) {
     this.classModal.open({ uuid: event.uuid });
+  }
+
+  async onEventResize(data) {
+    const { start, end, event } = data;
+    await this.app.Class.put({
+      uuid: event.uuid,
+      body: {
+        start,
+        durationMin: Math.ceil( (end.getTime() - start.getTime()) / (1000 * 60) ),
+      },
+    });
+    await this.load();
   }
 }
