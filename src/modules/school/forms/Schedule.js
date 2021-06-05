@@ -74,6 +74,9 @@ export default class Schedule extends Form {
 
   async onEventResize(data) {
     const { start, end, event } = data;
+    event.start = start;
+    event.end = end;
+    this.content.calendar.events = [...this.content.calendar.events];
     await this.app.Class.put({
       uuid: event.uuid,
       body: {
