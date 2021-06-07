@@ -58,10 +58,6 @@ const Attendance = {
       name: 'attend',
       type: Fields.BOOLEAN,
     },
-    {
-      name: 'skipped',
-      type: Fields.BOOLEAN,
-    },
   ],
 };
 
@@ -69,4 +65,10 @@ export const structures = {
   Course,
   Class,
   Attendance,
+};
+
+export const clientField = {
+  name: 'client',
+  type: Fields.REFERENCE,
+  entity: 'Client',
 };
