@@ -5,16 +5,19 @@ const path = require('path');
 const serverLib = require('./libserver/server');
 const sharedData = require('./shared');
 
+const DBVERSION = 1;
+
 const dataDirname = 'Oktopad CRM';
 const dataFilename = 'oktopad.db';
 const updatesFilename = 'updatelog';
-// const dbversionFilename = 'dbversion';
+const dbversionFilename = 'dbversion';
 
 const homeDir = os.homedir();
 
 const dataDir = path.join(homeDir, dataDirname);
 const dataFile = path.join(dataDir, dataFilename);
 const updatesFile = path.join(dataDir, updatesFilename);
+let dbversionFile = path.join(dataDir, dbversionFilename);
 
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
@@ -42,10 +45,31 @@ sharedData.localAddress = localAddress;
 let win;
 let server;
 let updatesFinished;
+let env;
 
-function startServer() {
-  // TODO: check dbversion and do dbsync
+async function doDbsyncIfNeed(server) {
+  if (!fs.existsSync(dbversionFile)) {
+    fs.writeFileSync(dbversionFile, '0');
+  }
+  const currentDbVersion = +fs.readFileSync(dbversionFile);
+  if (currentDbVersion < DBVERSION) {
+    await server.syncDatabase();
+    fs.writeFileSync(dbversionFile, DBVERSION);
+    console.log('dbsync done');
+  }
+}
+
+async function startServer() {
+  if (process.env.ENV) {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    env = require(`./env.${process.env.ENV.trim()}.json`);
+    if (env.dbversion) {
+      dbversionFile = env.dbversion;
+    }
+  }
+
   server = serverLib.getServer(dataFile, updatesFile);
+  await doDbsyncIfNeed(server);
   server.run();
 
   const checkReadyTimer = setInterval(() => {

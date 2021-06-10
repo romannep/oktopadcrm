@@ -1,9 +1,16 @@
 import chiefRole from './chief';
 import supportRole from './support';
+import chiefSchoolRole from './chiefSchool';
+import supportSchoolRole from './supportSchool';
+
+// const roles = [
+//   chiefRole,
+//   supportRole,
+// ];
 
 const roles = [
-  chiefRole,
-  supportRole,
+  chiefSchoolRole,
+  supportSchoolRole,
 ];
 
 // может быть несколько обновлений с ролями - применяем только один раз

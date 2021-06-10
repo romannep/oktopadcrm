@@ -2,7 +2,7 @@
   "name": "oktopad-crm",
   "author": "Roman Nep <neproman@gmail.com>",
   "description": "Oktopad CRM",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "main": "main.js",
   "mainPackage": "package/index.js",
   "sideEffects": false,
@@ -18,7 +18,7 @@
     "dbsync": "babel-node src/server.js dbsync",
     "server": "babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
+    "start": "cross-env ENV=school electron .",
     "build-client": "babel-node makeEnv.js && react-scripts build",
     "build-server": "webpack --config webpack.server.js --progress",
     "build-app": "electron-builder",
@@ -34,7 +34,6 @@
   },
   "license": "AGPL-3.0",
   "dependencies": {
-    "react-big-calendar": "^0.33.3",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
@@ -48,11 +47,12 @@
     "electron-builder": "^22.9.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-babel-module": "^5.0.1",
-    "katejs": "^1.1.21",
+    "katejs": "^1.1.24",
     "katejs-modules": "^0.0.27",
     "nodemon": "^1.18.4",
     "pg-hstore": "^2.3.3",
     "react-beautiful-dnd": "12.2.0",
+    "react-big-calendar": "^0.33.3",
     "webpack-cli": "^4.3.0"
   },
   "browserslist": {
