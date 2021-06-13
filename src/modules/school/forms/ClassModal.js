@@ -127,7 +127,7 @@ export default class ClassModal {
       this.uuid = undefined;
       const { start, end } = params;
       this.content.tutor.value = null;
-      this.content.course.value = null;
+      this.content.course.value = this.app.vars.currentCourse;
       this.content.start.value = start;
       this.content.durationMin.value = Math.ceil( (end.getTime() - start.getTime()) / (1000 * 60) );
       this.save();

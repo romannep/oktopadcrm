@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { Form, Elements } from 'katejs/lib/client';
+import { Form, Elements, getElement } from 'katejs/lib/client';
+import Fields from 'katejs/lib/fields';
 import ClassModal from './ClassModal';
 
 
@@ -18,6 +19,21 @@ export default class Schedule extends Form {
 
     this.elements = [
       {
+        type: Elements.GRID,
+        elements: [
+          {
+            ...getElement({
+              name: 'courseFilter',
+              type: Fields.REFERENCE,
+              entity: 'Course',
+            }, this),
+            title: 'Course filter',
+            onChange: () => this.courseChange(),
+            vaLue: '',
+          },
+        ],
+      },
+      {
         id: 'calendar',
         type: 'Calendar',
         onSelectSlot: (params) => this.newClass(params),
@@ -27,11 +43,15 @@ export default class Schedule extends Form {
         onSelectEvent: (event) => this.onSelectEvent(event),
         onEventResize: (data) => this.onEventResize(data),
         onEventDrop: (data) => this.onEventResize(data),
+        eventPropGetter: (event, start, end, isSelected) => this.eventPropGetter(event, start, end, isSelected),
       },
       ...this.classModal.elements,
     ];
     this.start = moment().startOf('week').toDate();
     this.end = moment().endOf('week').toDate();
+  }
+
+  afterInit() {
     this.load();
   }
 
@@ -51,19 +71,25 @@ export default class Schedule extends Form {
   }
 
   async load() {
+    const course = this.content.courseFilter.value;
+    const where = {
+      start: {
+        $lte: this.end,
+        $gte: this.start,
+      }
+    };
+    if (course && course.uuid) {
+      where.courseUuid = course.uuid;
+    }
     const { response: classes } = await this.app.Class.query({
-      where: {
-        start: {
-          $lte: this.end,
-          $gte: this.start,
-        }
-      },
+      where,
     });
     const events = classes.map((event) => ({
       start: moment(event.start).toDate(),
       end: moment(event.start).add(event.durationMin, 'minutes').toDate(),
       uuid: event.uuid,
       title: `${event.course ? event.course.title : 'Занятие'} (${event.tutor ? event.tutor.title : ''})`,
+      color: event.course && event.course.color,
     }));
     this.content.calendar.events = events;
   }
@@ -85,5 +111,22 @@ export default class Schedule extends Form {
       },
     });
     await this.load();
+  }
+
+  courseChange() {
+    this.app.vars.currentCourse = this.content.courseFilter.value;
+    this.load();
+  }
+
+  eventPropGetter(event, start, end, isSelected) {
+    const color = event.color || '#088596';
+    const newStyle = {
+      backgroundColor: color,
+      borderColor: color,
+    };
+    return {
+      style: newStyle,
+    };
+
   }
 }

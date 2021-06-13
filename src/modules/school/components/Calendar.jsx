@@ -28,7 +28,7 @@ const messages = {
   yesterday: 'Вчера',
   tomorrow: 'Завтра',
   today: 'Сегодня',
-  agenda: 'Агенда',
+  agenda: 'Список',
   noEventsInRange: 'Нет занятий в выбранном периода',
   showMore: e => `+${e} еще`,
 };

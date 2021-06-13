@@ -12,6 +12,10 @@ const Course = {
       name: 'title',
       type: Fields.STRING,
     },
+    {
+      name: 'color',
+      type: Fields.STRING,
+    },
   ],
 };
 
@@ -25,6 +29,7 @@ const Class = {
       name: 'course',
       type: Fields.REFERENCE,
       entity: 'Course',
+      attributes: ['uuid', 'title', 'color'],
     },
     {
       name: 'tutor',
