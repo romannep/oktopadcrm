@@ -2,7 +2,7 @@
   "name": "oktopad-crm",
   "author": "Roman Nep <neproman@gmail.com>",
   "description": "Oktopad CRM",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "main": "main.js",
   "mainPackage": "package/index.js",
   "sideEffects": false,
