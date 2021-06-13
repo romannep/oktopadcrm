@@ -45,7 +45,10 @@ export default Form => class CourseItemMixin extends Form {
   }
 
   afterInit() {
-    this.changeColor();
+    super.afterInit();
+    if (!this.uuid) {
+      this.changeColor();
+    }
   }
 
   async load() {
