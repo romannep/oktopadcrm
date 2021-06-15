@@ -71,9 +71,10 @@ export default class ClassModal {
                 cols: 2,
               },
               {
-                ...getElement(Class.fields.find(f => f.name === 'individual')),
-                title: 'Individual',
-                onChange: () => this.change(),
+                title: 'Individual class',
+                id: 'individual',
+                type: Elements.CHECKBOX,
+                disabled: true,
                 cols: 2,
               },
             ],
@@ -148,6 +149,7 @@ export default class ClassModal {
   }
 
   change() {
+    this.content.individual.value = this.content.course?.value?.individual;
     this.availability();
     if (this.changeTimeout) {
       clearTimeout(this.changeTimeout);
@@ -264,7 +266,6 @@ export default class ClassModal {
   }
 
   availability() {
-    this.content.individual.disabled = this.content.rows.elements.length > 1;
     this.content.addAttendance.disabled = this.content.individual.value && this.content.rows.elements.length;
   }
 }

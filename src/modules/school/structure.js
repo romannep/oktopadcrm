@@ -16,6 +16,10 @@ const Course = {
       name: 'color',
       type: Fields.STRING,
     },
+    {
+      name: 'individual',
+      type: Fields.BOOLEAN,
+    },
   ],
 };
 
@@ -29,7 +33,7 @@ const Class = {
       name: 'course',
       type: Fields.REFERENCE,
       entity: 'Course',
-      attributes: ['uuid', 'title', 'color'],
+      attributes: ['uuid', 'title', 'color', 'individual'],
     },
     {
       name: 'tutor',
@@ -43,10 +47,6 @@ const Class = {
     {
       name: 'durationMin',
       type: Fields.INTEGER,
-    },
-    {
-      name: 'individual',
-      type: Fields.BOOLEAN,
     },
   ],
 };
