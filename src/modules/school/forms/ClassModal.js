@@ -51,24 +51,35 @@ export default class ClassModal {
               {
                 ...getElement(Class.fields.find(f => f.name === 'tutor'), this),
                 onChange: () => this.change(),
+                cols: 3,
               },
               {
                 ...getElement(Class.fields.find(f => f.name === 'course'), this),
                 onChange: () => this.change(),
+                cols: 3,
               },
               {
                 ...getElement(Class.fields.find(f => f.name === 'start')),
                 title: 'Start',
                 onChange: () => this.change(),
+                cols: 2,
               },
               {
                 ...getElement(Class.fields.find(f => f.name === 'durationMin')),
                 title: 'Duration min',
                 onChange: () => this.change(),
+                cols: 2,
+              },
+              {
+                ...getElement(Class.fields.find(f => f.name === 'individual')),
+                title: 'Individual',
+                onChange: () => this.change(),
+                cols: 2,
               },
             ],
           },
           {
+            id: 'addAttendance',
             type: Elements.BUTTON,
             title: 'Добавить посещение',
             onClick: () => this.addAttendance(),
@@ -112,6 +123,7 @@ export default class ClassModal {
     this.aChangeTimeouts = {};
     this.attendanceUuids = {};
   }
+
   async open(params) {
     this.content.classModal.open = true;
     this.content.rows.elements = [];
@@ -122,6 +134,7 @@ export default class ClassModal {
       const { response: classData } = await this.app.Class.get({ uuid: params.uuid });
       this.form.setValues(classData);
       this.loadAttendances();
+      this.availability();
     } else {
       // new
       this.uuid = undefined;
@@ -135,6 +148,7 @@ export default class ClassModal {
   }
 
   change() {
+    this.availability();
     if (this.changeTimeout) {
       clearTimeout(this.changeTimeout);
       this.changeTimeout = undefined;
@@ -145,8 +159,8 @@ export default class ClassModal {
   }
 
   async save() {
-    const { tutor, course, start, durationMin } = this.form.getValues();
-    const { response: saved } = await this.app.Class.put({ uuid: this.uuid, body: { tutor, course, start, durationMin } });
+    const { tutor, course, start, durationMin, individual } = this.form.getValues();
+    const { response: saved } = await this.app.Class.put({ uuid: this.uuid, body: { tutor, course, start, durationMin, individual } });
     this.uuid = saved.uuid;
   }
 
@@ -199,6 +213,7 @@ export default class ClassModal {
     this.content.rows.elements.push(row);
     this.content.rows.elements.sort((a,b) => a.elements[0].value?.title > b.elements[0].value?.title ? 1 : a.elements[0].value?.title < b.elements[0].value?.title ? -1 : 0);
     this.content.rows.elements = [...this.content.rows.elements];
+    this.availability();
   }
 
   async clientQuery(query) {
@@ -245,5 +260,11 @@ export default class ClassModal {
     const rows = this.content.rows.elements;
     rows.splice(rows.findIndex(i => i.id === `row${rowId}`), 1);
     this.content.rows.elements = [...rows];
+    this.availability();
+  }
+
+  availability() {
+    this.content.individual.disabled = this.content.rows.elements.length > 1;
+    this.content.addAttendance.disabled = this.content.individual.value && this.content.rows.elements.length;
   }
 }

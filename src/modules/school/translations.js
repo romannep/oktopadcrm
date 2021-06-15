@@ -12,5 +12,6 @@ export default {
     'Course filter': 'Отбор по направлению',
     'Color': 'Цвет',
     'Change': 'Изменить',
+    'Individual': 'Индивидуальное занятие',
   },
 }

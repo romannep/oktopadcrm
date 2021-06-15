@@ -5,7 +5,7 @@ const path = require('path');
 const serverLib = require('./libserver/server');
 const sharedData = require('./shared');
 
-const DBVERSION = 2;
+const DBVERSION = 3;
 
 const dataDirname = 'Oktopad CRM';
 const dataFilename = 'oktopad.db';
