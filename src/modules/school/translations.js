@@ -14,5 +14,10 @@ export default {
     'Change': 'Изменить',
     'Individual': 'Индивидуальные занятия',
     'Individual class': 'Индивидуальное занятие',
+    'Products': 'Товары/услуги',
+    'Product': 'Товар/услуга',
+    'Is subscription': 'Это абонемент',
+    'Subscription settings': 'Настройка абонемента',
+    'Attendances limit (0/unset - no limit)': 'Количество посещений (не указано или 0 - без ограничений)',
   },
 }

@@ -15,10 +15,12 @@ const Course = {
     {
       name: 'color',
       type: Fields.STRING,
+      skipForList: true,
     },
     {
       name: 'individual',
       type: Fields.BOOLEAN,
+      skipForList: true,
     },
   ],
 };
@@ -71,7 +73,7 @@ const Attendance = {
 };
 
 export const ValidityType = {
-  Perpetual: 'parpetual',
+  Perpetual: 'perpetual',
   Months: 'months',
   Days: 'days',
 };
@@ -81,10 +83,10 @@ export const productFields = [
     name: 'isSubscription',
     type: Fields.BOOLEAN,
   },
-  {
-    name: 'individual',
-    type: Fields.BOOLEAN,
-  },
+  // {
+  //   name: 'individual',
+  //   type: Fields.BOOLEAN,
+  // },
   {
     name: 'attendances',
     type: Fields.INTEGER,
