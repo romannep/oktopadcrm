@@ -44,6 +44,10 @@ const Class = {
       name: 'durationMin',
       type: Fields.INTEGER,
     },
+    {
+      name: 'individual',
+      type: Fields.BOOLEAN,
+    },
   ],
 };
 
@@ -65,6 +69,48 @@ const Attendance = {
     },
   ],
 };
+
+export const ValidityType = {
+  Perpetual: 'parpetual',
+  Months: 'months',
+  Days: 'days',
+};
+
+export const productFields = [
+  {
+    name: 'isSubscription',
+    type: Fields.BOOLEAN,
+  },
+  {
+    name: 'individual',
+    type: Fields.BOOLEAN,
+  },
+  {
+    name: 'attendances',
+    type: Fields.INTEGER,
+  },
+  {
+    name: 'validityType',
+    type: Fields.STRING,
+  },
+  {
+    name: 'validityAmount',
+    type: Fields.INTEGER,
+  },
+];
+
+export const productTables = [
+  {
+    name: 'courses',
+    fields: [
+      {
+        name: 'course',
+        type: Fields.REFERENCE,
+        entity: 'Course',
+      },
+    ],
+  },
+];
 
 export const structures = {
   Course,

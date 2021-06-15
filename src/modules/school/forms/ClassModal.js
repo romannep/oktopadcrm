@@ -1,5 +1,5 @@
 import { Elements, getElement, ConfirmDialog } from 'katejs/lib/client';
-import { clientField, structures } from '../structure';
+import { structures } from '../structure';
 
 const Class = structures.Class;
 
