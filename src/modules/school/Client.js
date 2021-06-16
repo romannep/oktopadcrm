@@ -25,6 +25,7 @@ export default (app) => {
   const supportRule = { entity: 'Role', method: 'put' };
   app.getMenuItem('Attendances').rule = supportRule;
   app.getMenuItem('Classs').rule = supportRule;
+  app.getMenuItem('Subscriptions').rule = supportRule;
   app.setMenu(app.menu);
 
 }

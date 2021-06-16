@@ -78,15 +78,12 @@ export const ValidityType = {
   Days: 'days',
 };
 
+export const ValidityTypeOptions = Object.keys(ValidityType).map((key) => ({
+  title: key,
+  value: ValidityType[key],
+}));
+
 export const productFields = [
-  {
-    name: 'isSubscription',
-    type: Fields.BOOLEAN,
-  },
-  // {
-  //   name: 'individual',
-  //   type: Fields.BOOLEAN,
-  // },
   {
     name: 'attendances',
     type: Fields.INTEGER,
@@ -114,10 +111,34 @@ export const productTables = [
   },
 ];
 
+const Subscription = {
+  fields: [
+    ...productFields,
+    {
+      name: 'client',
+      type: Fields.REFERENCE,
+      entity: 'Client',
+    },
+    {
+      name: 'order',
+      type: Fields.REFERENCE,
+      entity: 'Order',
+    },
+    {
+      name: 'expiredDate',
+      type: Fields.DATE,
+    },
+  ],
+  tables: [
+    ...productTables,
+  ],
+};
+
 export const structures = {
   Course,
   Class,
   Attendance,
+  Subscription,
 };
 
 export const clientField = {

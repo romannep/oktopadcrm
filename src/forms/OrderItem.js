@@ -2,8 +2,6 @@ import { Elements } from 'katejs/lib/client';
 
 import ClientSelection from './ClientSelection';
 
-import { structures } from '../structure';
-
 export class ProductsTable {
   constructor(args) {
     this.elements = args.elements;
