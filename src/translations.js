@@ -225,6 +225,8 @@ const translate = {
     'To Client': 'К Клиенту',
     'Invoices': 'Счета',
     'Invoice': 'Счет',
+    'Create subscription': 'Создать абонемент',
+    'Subscription starts': 'Начало действия абонемента',
   },
 };
 

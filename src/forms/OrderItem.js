@@ -75,6 +75,7 @@ const OrderItemMixin = Form => class OrderItem extends Form {
     this.elements.splice(this.elements.findIndex(item => item.id === 'address'), 1);
 
     this.elements.set('cashbox', {
+      id: 'paymentGrid',
       type: Elements.GRID,
       elements: [
         {

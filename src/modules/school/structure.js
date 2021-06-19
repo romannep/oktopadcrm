@@ -134,6 +134,17 @@ const Subscription = {
   ],
 };
 
+export const orderFields = [
+  {
+    name: 'createSubscription',
+    type: Fields.BOOLEAN,
+  },
+  {
+    name: 'subscriptionStarts',
+    type: Fields.DATE,
+  },
+];
+
 export const structures = {
   Course,
   Class,

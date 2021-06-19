@@ -5,6 +5,7 @@ import translations from './translations';
 import { structures } from './structure';
 import CourseItemMixin from './forms/CourseItemMixin';
 import ProductItemMixin from './forms/ProductItemMixin';
+import OrderItemMixin from './forms/OrderItemMixin';
 
 export default (app) => {
   app.init({ structures, addToMenu: true });
@@ -17,6 +18,7 @@ export default (app) => {
   app.forms.Schedule = Schedule;
   app.forms.CourseItem = CourseItemMixin(app.forms.CourseItem);
   app.forms.ProductItem = ProductItemMixin(app.forms.ProductItem);
+  app.forms.OrderItem = OrderItemMixin(app.forms.OrderItem);
 
   app.menu.unshift({
     title: 'Schedule',
