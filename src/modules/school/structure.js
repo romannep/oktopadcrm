@@ -125,9 +125,17 @@ const Subscription = {
       entity: 'Order',
     },
     {
+      name: 'startDate',
+      type: Fields.DATE,
+    },
+    {
       name: 'expiredDate',
       type: Fields.DATE,
     },
+    {
+      name: 'sum',
+      type: Fields.DECIMAL,
+    }
   ],
   tables: [
     ...productTables,

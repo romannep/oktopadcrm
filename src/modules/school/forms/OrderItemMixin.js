@@ -15,13 +15,17 @@ export default Form => class OrderItem extends Form {
               {
                 ...getElement(orderFields[0]),
                 onChange: () => this.isSubscriptionChange(),
+                value: true,
               },
             ],
             style: { marginTop: 20, marginBottom: 15 },
           },
-          getElement(orderFields[1]),
+          {
+            ...getElement(orderFields[1]),
+            value: new Date(),
+          },
         ],
-      }
+      },
     ];
     this.elements.splice(this.elements.findIndex(item => item.id === 'paymentGrid') + 1, 0, ...subscriptionElements);
   }

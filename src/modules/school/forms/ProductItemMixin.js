@@ -1,5 +1,6 @@
 import { getElement, Elements, getTableElement } from 'katejs/lib/client';
 import { productFields, ValidityType, ValidityTypeOptions, productTables } from '../structure';
+import Fields from 'katejs/lib/fields';
 
 const get = (name) => productFields.find(item => item.name === name);
 
@@ -11,7 +12,10 @@ export default Form => class ProductItem extends Form {
       elements: [
         this.elements.get('accountBalances'),
         {
-          ...getElement(get('isSubscription')),
+          ...getElement({
+            name: 'isSubscription',
+            type: Fields.BOOLEAN,
+          }),
           onChange: () => this.changeIsSubscription(),
         }
       ],
@@ -31,7 +35,7 @@ export default Form => class ProductItem extends Form {
 
     this.validityElements = {
       amount: [validityAmount, validityType],
-      perpetual: [validityType],
+      perpetual: [validityType, { ...validityAmount, hidden: true }],
     };
     this.elements.push({
       id: 'subscriptionCard',
@@ -72,6 +76,7 @@ export default Form => class ProductItem extends Form {
     this.content.accountBalances.disabled = this.content.isSubscription.value;
     this.content.subscriptionCard.hidden = !this.content.isSubscription.value;
     const hideValidityAmount = (this.content.validityType.value !== ValidityType.Days) && (this.content.validityType.value !== ValidityType.Months);
+    this.validityElements.amount[0].value = this.content.validityAmount.value;
     this.validityElements.amount[1].value = this.content.validityType.value;
     this.validityElements.perpetual[0].value = this.content.validityType.value;
     this.content.validityGrid.elements = hideValidityAmount ? this.validityElements.perpetual : this.validityElements.amount;

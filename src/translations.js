@@ -227,6 +227,9 @@ const translate = {
     'Invoice': 'Счет',
     'Create subscription': 'Создать абонемент',
     'Subscription starts': 'Начало действия абонемента',
+    'months': 'Месяцы',
+    'days': 'Дни',
+    'Start date': 'Начало действия абонемента',
   },
 };
 
