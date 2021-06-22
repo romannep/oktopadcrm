@@ -69,6 +69,11 @@ const Attendance = {
       name: 'attend',
       type: Fields.BOOLEAN,
     },
+    {
+      name: 'subscription',
+      type: Fields.REFERENCE,
+      entity: 'Subscription',
+    },
   ],
 };
 
@@ -113,6 +118,10 @@ export const productTables = [
 
 const Subscription = {
   fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
     ...productFields,
     {
       name: 'client',
@@ -135,7 +144,11 @@ const Subscription = {
     {
       name: 'sum',
       type: Fields.DECIMAL,
-    }
+    },
+    {
+      name: 'closed',
+      type: Fields.BOOLEAN,
+    },
   ],
   tables: [
     ...productTables,

@@ -187,17 +187,17 @@ export default class ClassModal {
         {
           id: `client${rowId}`,
           type: Elements.SELECT,
-          getOptions: (q) => this.clientQuery(),
+          getOptions: (q) => this.clientQuery(q),
           title: '',
           cols: 4,
-          onChange: () => this.saveAttendance(rowId),
+          onChange: () => this.changeAttendanceClient(rowId),
           value: data.client,
         },
         {
           id: `attend${rowId}`,
           type: Elements.CHECKBOX,
           cols: 1,
-          onChange: () => this.saveAttendance(rowId),
+          onChange: () => this.changeAttendanceAttend(rowId),
           style: { marginTop: 10 },
           value: data.attend,
         },
@@ -215,6 +215,7 @@ export default class ClassModal {
     this.content.rows.elements.push(row);
     this.content.rows.elements.sort((a,b) => a.elements[0].value?.title > b.elements[0].value?.title ? 1 : a.elements[0].value?.title < b.elements[0].value?.title ? -1 : 0);
     this.content.rows.elements = [...this.content.rows.elements];
+    this.attendanceAvailability(rowId);
     this.availability();
   }
 
@@ -229,6 +230,38 @@ export default class ClassModal {
       },
     });
     return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone || ''}${(item.phone && item.address) ? ',' : ''}${item.address || ''})` }));
+  }
+
+  attendanceAvailability(rowId) {
+    // без клиента нельзя ставить посещения
+    // с посещением нельзя менять клиента
+    const client = this.content[`client${rowId}`];
+    const attend = this.content[`attend${rowId}`];
+    attend.disabled = !client.value;
+    client.disabled = attend.value;
+  }
+
+  async changeAttendanceClient(rowId) {
+    const body = {
+      client: this.content[`client${rowId}`].value,
+      class: { uuid: this.uuid },
+    };
+    const uuid = this.attendanceUuids[rowId];
+    const { response } = await this.app.Attendance.put({ uuid, body: body });
+    this.attendanceUuids[rowId] = response.uuid;
+    this.attendanceAvailability(rowId);
+  }
+
+  async changeAttendanceAttend(rowId) {
+    const attend = this.content[`attend${rowId}`];
+    // отправляем на бэк: хотим отметить (списать) на такое то занятие такого то клиента
+    // ищем там абонемент и пишем его в посещение или возвращаем ответ что абонементов нет
+    await this.app.School.action({ action: 'attend' });
+    // debug
+    attend.value = false;
+
+
+    this.attendanceAvailability(rowId);
   }
 
   async saveAttendance(rowId) {

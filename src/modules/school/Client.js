@@ -9,6 +9,7 @@ import OrderItemMixin from './forms/OrderItemMixin';
 
 export default (app) => {
   app.init({ structures, addToMenu: true });
+  app.makeApiLinks({ entities: ['School'] });
 
   app.constructor.components = { ...app.constructor.components, ...Components };
 
