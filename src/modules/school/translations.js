@@ -28,5 +28,7 @@ export default {
     'Validity type': 'Тип срока действия',
     'Validity amount': 'Срок действия',
     'Expired date': 'Окончание срока действия',
+    'Error!': 'Ошибка!',
+    'No valid subscriptions found!': 'Не найдены активные абонементы!',
   },
 }

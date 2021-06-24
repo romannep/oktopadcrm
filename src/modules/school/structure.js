@@ -64,6 +64,7 @@ const Attendance = {
       name: 'class',
       type: Fields.REFERENCE,
       entity: 'Class',
+      attributes: ['uuid', 'title', 'courseUuid'],
     },
     {
       name: 'attend',
@@ -148,6 +149,10 @@ const Subscription = {
     {
       name: 'closed',
       type: Fields.BOOLEAN,
+    },
+    {
+      name: 'visits',
+      type: Fields.INTEGER,
     },
   ],
   tables: [

@@ -119,6 +119,25 @@ export default class ClassModal {
         ],
       },
       ConfirmDialog({ form: this.form, id: 'confirmDialog' }),
+      {
+        id: 'errorModal',
+        type: Elements.MODAL,
+        open: false,
+        title: ' ',
+        elements: [
+          {
+            type: Elements.LABEL,
+            title: 'Error!',
+            tag: 'h3',
+          },
+          {
+            id: 'errorModalText',
+            type: Elements.LABEL,
+            title: '',
+            tag: 'h5',
+          },
+        ],
+      },
     ];
 
     this.aChangeTimeouts = {};
@@ -254,13 +273,18 @@ export default class ClassModal {
 
   async changeAttendanceAttend(rowId) {
     const attend = this.content[`attend${rowId}`];
+    const body = {
+      attend: attend.value,
+    };
+    const uuid = this.attendanceUuids[rowId];
     // отправляем на бэк: хотим отметить (списать) на такое то занятие такого то клиента
     // ищем там абонемент и пишем его в посещение или возвращаем ответ что абонементов нет
-    await this.app.School.action({ action: 'attend' });
-    // debug
-    attend.value = false;
-
-
+    const { error } = await this.app.Attendance.put({ uuid, body: body });
+    if (error) {
+      this.content.errorModalText.title = error.message;
+      this.content.errorModal.open = true;
+      attend.value = false;
+    }
     this.attendanceAvailability(rowId);
   }
 
