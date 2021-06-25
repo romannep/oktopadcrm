@@ -277,8 +277,7 @@ export default class ClassModal {
       attend: attend.value,
     };
     const uuid = this.attendanceUuids[rowId];
-    // отправляем на бэк: хотим отметить (списать) на такое то занятие такого то клиента
-    // ищем там абонемент и пишем его в посещение или возвращаем ответ что абонементов нет
+
     const { error } = await this.app.Attendance.put({ uuid, body: body });
     if (error) {
       this.content.errorModalText.title = error.message;
@@ -286,23 +285,6 @@ export default class ClassModal {
       attend.value = false;
     }
     this.attendanceAvailability(rowId);
-  }
-
-  async saveAttendance(rowId) {
-    if (this.aChangeTimeouts[rowId]) {
-      clearTimeout(this.aChangeTimeouts[rowId]);
-      this.aChangeTimeouts[rowId] = undefined;
-    }
-    const body = {
-      client: this.content[`client${rowId}`].value,
-      attend: this.content[`attend${rowId}`].value,
-      class: { uuid: this.uuid },
-    };
-    const uuid = this.attendanceUuids[rowId];
-    setTimeout(async () => {
-      const { response } = await this.app.Attendance.put({ uuid, body: body });
-      this.attendanceUuids[rowId] = response.uuid;
-    }, 500);
   }
 
   async loadAttendances() {
