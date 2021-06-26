@@ -21,7 +21,7 @@
     "start": "cross-env ENV=school electron .",
     "build-client": "babel-node makeEnv.js && react-scripts build",
     "build-server": "webpack --config webpack.server.js --progress",
-    "build-app": "electron-builder",
+    "build-app": "npm rebuild sqlite && electron-builder",
     "build-app-linux": "electron-builder --linux",
     "build": "npm run build-client && npm run build-server && npm run build-app",
     "build-linux": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app-linux",

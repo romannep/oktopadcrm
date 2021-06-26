@@ -56,7 +56,7 @@ export default Entity => class Attendance extends Entity {
     let subscriptionValue;
     for (let i = 0; i < subscriptions.length; i++) {
       const subscription = subscriptions[i];
-      const { response: allVisits } = await this.query({ data: { where: { subscriptionUuid: subscription.uuid }, noOptions: true } });
+      const { response: allVisits } = await this.query({ data: { where: { subscriptionUuid: subscription.uuid, attend: true }, noOptions: true } });
       let visits = allVisits.length;
       let closed;
       if (!subscription.attendances) { // unlim
