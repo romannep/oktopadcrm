@@ -31,7 +31,6 @@ export default Entity => class Attendance extends Entity {
     }
 
     const { client, class: schoolClass } = savedEntity;
-    console.log('Search subscriptions', client, schoolClass);
 
     if (!client || !schoolClass || !schoolClass.courseUuid) {
       throw badRequestError;
@@ -57,17 +56,21 @@ export default Entity => class Attendance extends Entity {
     let subscriptionValue;
     for (let i = 0; i < subscriptions.length; i++) {
       const subscription = subscriptions[i];
-      if (!subscription.attendances) {
-        subscriptionValue = subscription;
-        break;
-      }
-      const { response: allVisits } = await this.query({ data: { where: { subscriptionUuid: subscription.uuid  } } });
+      const { response: allVisits } = await this.query({ data: { where: { subscriptionUuid: subscription.uuid }, noOptions: true } });
       let visits = allVisits.length;
-      if (subscription.attendances > visits) {
+      let closed;
+      if (!subscription.attendances) { // unlim
         visits += 1;
         subscriptionValue = subscription;
+        closed = false;
+      } else {
+        if (subscription.attendances > visits) {
+          visits += 1;
+          subscriptionValue = subscription;
+        }
+        closed = visits >= subscription.attendances;
       }
-      const closed = visits >= subscription.attendances;
+
       await this.app.Subscription.put({
         data: {
           uuid: subscription.uuid,
@@ -78,6 +81,7 @@ export default Entity => class Attendance extends Entity {
         },
         transaction,
       });
+
       if (subscriptionValue) {
         break;
       }
@@ -91,18 +95,20 @@ export default Entity => class Attendance extends Entity {
 
   async delete(args) {
     const { response: attendance } = await this.get({ data: { uuid: args.data.uuid } });
-    const { response: subscription } = await this.app.Subscription.get({ data: { uuid: attendance.subscription.uuid } });
-    const visits = subscription.visits - 1;
-    const closed = subscription.attendances <= visits;
-    await this.app.Subscription.put({
-      data: {
-        uuid: subscription.uuid,
-        body: {
-          visits,
-          closed,
+    if (attendance.subscription && attendance.subscription.uuid && attendance.attend) {
+      const { response: subscription } = await this.app.Subscription.get({ data: { uuid: attendance.subscription.uuid } });
+      const visits = subscription.visits - 1;
+      const closed = subscription.attendances <= visits;
+      await this.app.Subscription.put({
+        data: {
+          uuid: subscription.uuid,
+          body: {
+            visits,
+            closed,
+          },
         },
-      },
-    });
+      });
+    }
     return super.delete(args);
   }
 }
