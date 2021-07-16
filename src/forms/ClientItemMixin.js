@@ -27,7 +27,22 @@ export default ItemForm => class ClientItem extends ItemForm {
       report: true,
     });
 
+    this.elements.set('phone', {
+      type: Elements.GRID,
+      elements: [
+        {
+          ...this.elements.get('phone'),
+          cols: 6,
+        },
+        {
+          ...this.elements.cut('address'),
+          cols: 6,
+        },
+      ],
+    });
+
     this.elements.push({
+      id: 'reportGrid',
       type: Elements.GRID,
       elements: [
         {

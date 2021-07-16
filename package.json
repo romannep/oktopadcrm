@@ -47,7 +47,7 @@
     "electron-builder": "^22.9.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-babel-module": "^5.0.1",
-    "katejs": "^1.1.26",
+    "katejs": "^1.1.28",
     "katejs-modules": "^0.0.27",
     "nodemon": "^1.18.4",
     "pg-hstore": "^2.3.3",

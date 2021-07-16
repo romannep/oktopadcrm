@@ -30,5 +30,7 @@ export default {
     'Expired date': 'Окончание срока действия',
     'Error!': 'Ошибка!',
     'No valid subscriptions found!': 'Не найдены активные абонементы!',
+    'perpetual': 'Бессрочный',
+    'Visits': 'Посещено',
   },
 }

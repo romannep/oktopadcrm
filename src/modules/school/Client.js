@@ -6,6 +6,7 @@ import { structures } from './structure';
 import CourseItemMixin from './forms/CourseItemMixin';
 import ProductItemMixin from './forms/ProductItemMixin';
 import OrderItemMixin from './forms/OrderItemMixin';
+import ClientItemMixin from './forms/ClientItemMixin';
 
 export default (app) => {
   app.init({ structures, addToMenu: true });
@@ -20,6 +21,7 @@ export default (app) => {
   app.forms.CourseItem = CourseItemMixin(app.forms.CourseItem);
   app.forms.ProductItem = ProductItemMixin(app.forms.ProductItem);
   app.forms.OrderItem = OrderItemMixin(app.forms.OrderItem);
+  app.forms.ClientItem = ClientItemMixin(app.forms.ClientItem);
 
   app.menu.unshift({
     title: 'Schedule',
@@ -31,4 +33,5 @@ export default (app) => {
   app.getMenuItem('Subscriptions').rule = supportRule;
   app.setMenu(app.menu);
 
+  app.formCloseHistoryBack = true;
 }
